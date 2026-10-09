@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { ExternalLink, Heart, Music2, Pause, Play, Search, Sparkles, Volume2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { birthdayLines, chordShapes, tracks } from '@/lib/birthday';
+import { searchSpotify, type SpotifyResult } from '@/lib/spotify.functions';
 import cover from '@/assets/sunset-memory.jpg';
 
 type SpotifyController = { play: () => void; pause: () => void; resume: () => void; loadUri: (uri: string) => void; addListener: (name: string, cb: (event: { data: { position: number; isPaused: boolean } }) => void) => void; destroy: () => void };
@@ -10,7 +11,10 @@ declare global { interface Window { onSpotifyIframeApiReady?: (api: SpotifyApi) 
 
 export function BirthdayMusic({ entered, onUnlock }: { entered: boolean; onUnlock: () => void }) {
   const [track, setTrack] = useState(tracks[0]);
+  const [coverUrl, setCoverUrl] = useState<string | null>(null);
   const [query, setQuery] = useState('');
+  const [results, setResults] = useState<SpotifyResult[]>([]);
+  const [searching, setSearching] = useState(false);
   const [selected, setSelected] = useState('C');
   const [strumming, setStrumming] = useState(false);
   const [playing, setPlaying] = useState(false);
@@ -36,6 +40,27 @@ export function BirthdayMusic({ entered, onUnlock }: { entered: boolean; onUnloc
     const timer = setTimeout(() => setMessage(''), 6000);
     return () => clearTimeout(timer);
   }, [message]);
+  useEffect(() => {
+    const q = query.trim();
+    if (q.length < 2) { setResults([]); setSearching(false); return; }
+    setSearching(true);
+    const timer = setTimeout(() => {
+      searchSpotify({ data: { query: q } })
+        .then(setResults)
+        .catch(() => setResults([]))
+        .finally(() => setSearching(false));
+    }, 350);
+    return () => clearTimeout(timer);
+  }, [query]);
+  function selectResult(result: SpotifyResult) {
+    controller.current?.pause();
+    setTrack({ id: result.id, title: result.title, artist: result.artist, chords: track.chords });
+    setCoverUrl(result.image);
+    setPosition(0); setPlaying(false); setStep(0); setQuery(''); setResults([]);
+    setMessage('happy birthday to my favorite person, keneisya! 🤍');
+    controller.current?.loadUri(`spotify:track:${result.id}`);
+    controller.current?.play();
+  }
   useEffect(() => {
     window.onSpotifyIframeApiReady = (api) => {
       if (!mount.current) return;
@@ -87,7 +112,7 @@ export function BirthdayMusic({ entered, onUnlock }: { entered: boolean; onUnloc
   }
   function selectTrack(index: number) {
     const next = tracks[index]; if (!next) return;
-    controller.current?.pause(); setTrack(next); setPosition(0); setPlaying(false); setStep(0); setQuery(''); setSelected(next.chords[0]);
+    controller.current?.pause(); setTrack(next); setCoverUrl(null); setPosition(0); setPlaying(false); setStep(0); setQuery(''); setSelected(next.chords[0]);
     setMessage('happy birthday to my favorite person, keneisya! 🤍');
     if (next.id) { controller.current?.loadUri(`spotify:track:${next.id}`); controller.current?.play(); }
   }
@@ -106,8 +131,8 @@ export function BirthdayMusic({ entered, onUnlock }: { entered: boolean; onUnloc
     <div className="music-grid">
       <div className="glass-panel"><div className="panel-top"><span className="panel-title"><Music2 size={15} className="text-spotify" /> your soundscape</span><span className="pill">made for your ears ♡</span></div>
       <div className="music-body"><div className="search-box"><Search /><input aria-label="Search songs" placeholder="find a song that feels like us..." value={query} onChange={e => setQuery(e.target.value)} /></div>
-      {query && <div className="search-results">{tracks.map((t, i) => t.title.toLowerCase().includes(query.toLowerCase()) && <Button key={t.title} variant="ghost" onClick={() => selectTrack(i)}>{t.title}<span>{t.artist}</span></Button>)}<a href={`https://open.spotify.com/search/${encodeURIComponent(query)}`} target="_blank" rel="noreferrer">search Spotify for “{query}”<ExternalLink size={13} /></a></div>}
-      <div className="now-playing"><img src={cover} width={74} height={74} className="album-art" alt="Pink sunset, a little birthday keepsake" /><div className="min-w-0"><h3 className="track-title">{track.title}</h3><p className="track-artist">{track.artist}</p><p className="track-note"><Heart size={10} /> this one reminds me of you</p></div><Button size="icon" variant="ghost" title={playing ? 'Pause song' : 'Play song'} aria-label={playing ? 'Pause song' : 'Play song'} onClick={toggle}>{playing ? <Pause /> : <Play />}</Button></div>
+      {query && <div className="search-results">{searching && <p className="player-message">searching spotify…</p>}{results.map(r => <Button key={r.id} variant="ghost" onClick={() => selectResult(r)}>{r.title}<span>{r.artist}</span></Button>)}<a href={`https://open.spotify.com/search/${encodeURIComponent(query)}`} target="_blank" rel="noreferrer">search Spotify for “{query}”<ExternalLink size={13} /></a></div>}
+      <div className="now-playing"><img src={coverUrl ?? cover} width={74} height={74} className="album-art" alt="Pink sunset, a little birthday keepsake" /><div className="min-w-0"><h3 className="track-title">{track.title}</h3><p className="track-artist">{track.artist}</p><p className="track-note"><Heart size={10} /> this one reminds me of you</p></div><Button size="icon" variant="ghost" title={playing ? 'Pause song' : 'Play song'} aria-label={playing ? 'Pause song' : 'Play song'} onClick={toggle}>{playing ? <Pause /> : <Play />}</Button></div>
       <div className={`spotify-embed ${track.id ? '' : 'hidden'}`}><div ref={mount} /></div>
       {!ready && <p className="player-message">Spotify is getting ready… <a href="https://open.spotify.com/track/3HEfLSVUo9rxdD0JxbLAUU" target="_blank" rel="noreferrer" className="underline">open the song</a></p>}
       {!track.id && <p className="player-message">an original instrumental birthday serenade</p>}
