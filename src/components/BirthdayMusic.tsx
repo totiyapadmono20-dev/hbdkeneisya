@@ -45,7 +45,14 @@ export function BirthdayMusic({ entered, onUnlock }: { entered: boolean; onUnloc
     if (q.length < 2) { setResults([]); setSearching(false); return; }
     setSearching(true);
     const timer = setTimeout(() => {
+      // Try the Lovable server function first; on static hosts (e.g. Netlify)
+      // fall back to the Netlify Function at /api/spotify-search.
       searchSpotify({ data: { query: q } })
+        .catch(async () => {
+          const res = await fetch(`/api/spotify-search?q=${encodeURIComponent(q)}`);
+          if (!res.ok) throw new Error('search unavailable');
+          return (await res.json()) as SpotifyResult[];
+        })
         .then(setResults)
         .catch(() => setResults([]))
         .finally(() => setSearching(false));
