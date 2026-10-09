@@ -20,7 +20,9 @@ const initialMemories: Memory[] = [
 const winLabels = ['survived a super busy day', 'found a reason to smile', 'took a well-deserved rest', 'was a little kinder to myself'];
 const winNotes = ['even on the hard days, you keep going. i’m so proud of you, neis. ♡', 'your smile is my favorite little thing in the whole world. ♡', 'rest isn’t something you have to earn. you deserve softness, always. ♡', 'you deserve the same kindness you give everyone else. always. ♡'];
 const petNotes = ['you did amazing today, keneisya!', 'take a deep breath, little sunshine ♡', 'someone loves you so much! ❤️', 'a tiny reminder: you are enough.'];
-const zones = ['Asia/Jakarta', 'Asia/Makassar', 'Asia/Jayapura', 'Asia/Singapore', 'Asia/Tokyo', 'Europe/London', 'Europe/Paris', 'America/New_York', 'Australia/Sydney', 'UTC'];
+const zones = ['Asia/Makassar', 'Asia/Jakarta', 'Asia/Jayapura', 'Asia/Singapore', 'Asia/Tokyo', 'Europe/London', 'Europe/Paris', 'America/New_York', 'Australia/Sydney', 'UTC'];
+const zoneNames: Record<string,string> = { 'Asia/Makassar':'bali · wita', 'Asia/Jakarta':'bekasi · wib', 'Asia/Jayapura':'papua · wit', 'Asia/Singapore':'singapore', 'Asia/Tokyo':'tokyo', 'Europe/London':'london', 'Europe/Paris':'paris', 'America/New_York':'new york', 'Australia/Sydney':'sydney', 'UTC':'utc' };
+const zoneLabel = (zone: string) => zoneNames[zone] ?? zone.toLowerCase().replaceAll('_',' ');
 
 function celebration() {
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
@@ -44,8 +46,8 @@ export function BirthdayOasis() {
   const [editing,setEditing] = useState(false);
   const [note,setNote] = useState('');
   const [now,setNow] = useState<Date | null>(null);
-  const [yourZone,setYourZone] = useState('Asia/Jakarta');
-  const [myZone,setMyZone] = useState('UTC');
+  const [yourZone,setYourZone] = useState('Asia/Makassar');
+  const [myZone,setMyZone] = useState('Asia/Jakarta');
   const [hug,setHug] = useState(false);
   const [copied,setCopied] = useState(false);
   const [burst,setBurst] = useState(0);
@@ -63,8 +65,6 @@ export function BirthdayOasis() {
   useEffect(() => {
     setNow(new Date());
     const timer = setInterval(() => setNow(new Date()),1000);
-    const zone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    if (zone) setYourZone(zone);
     return () => { clearInterval(timer); if(petTimer.current) clearTimeout(petTimer.current); mediaUrls.current.forEach(url => URL.revokeObjectURL(url)); };
   },[]);
   function enter() { window.dispatchEvent(new Event('oasis-enter')); setEntered(true); }
