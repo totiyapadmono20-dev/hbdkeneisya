@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { ExternalLink, Heart, Music2, Pause, Play, Search, Sparkles, Volume2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { birthdayLines, chordShapes, tracks } from '@/lib/birthday';
+import { searchSpotify, type SpotifyResult } from '@/lib/spotify.functions';
 import cover from '@/assets/sunset-memory.jpg';
 
 type SpotifyController = { play: () => void; pause: () => void; resume: () => void; loadUri: (uri: string) => void; addListener: (name: string, cb: (event: { data: { position: number; isPaused: boolean } }) => void) => void; destroy: () => void };
