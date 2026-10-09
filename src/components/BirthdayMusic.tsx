@@ -41,6 +41,27 @@ export function BirthdayMusic({ entered, onUnlock }: { entered: boolean; onUnloc
     return () => clearTimeout(timer);
   }, [message]);
   useEffect(() => {
+    const q = query.trim();
+    if (q.length < 2) { setResults([]); setSearching(false); return; }
+    setSearching(true);
+    const timer = setTimeout(() => {
+      searchSpotify({ data: { query: q } })
+        .then(setResults)
+        .catch(() => setResults([]))
+        .finally(() => setSearching(false));
+    }, 350);
+    return () => clearTimeout(timer);
+  }, [query]);
+  function selectResult(result: SpotifyResult) {
+    controller.current?.pause();
+    setTrack({ id: result.id, title: result.title, artist: result.artist, chords: track.chords });
+    setCoverUrl(result.image);
+    setPosition(0); setPlaying(false); setStep(0); setQuery(''); setResults([]);
+    setMessage('happy birthday to my favorite person, keneisya! 🤍');
+    controller.current?.loadUri(`spotify:track:${result.id}`);
+    controller.current?.play();
+  }
+  useEffect(() => {
     window.onSpotifyIframeApiReady = (api) => {
       if (!mount.current) return;
       api.createController(mount.current, { uri: 'spotify:track:3HEfLSVUo9rxdD0JxbLAUU', width: '100%', height: 80 }, (c) => {
