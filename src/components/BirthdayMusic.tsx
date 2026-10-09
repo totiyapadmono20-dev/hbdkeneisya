@@ -11,7 +11,10 @@ declare global { interface Window { onSpotifyIframeApiReady?: (api: SpotifyApi) 
 
 export function BirthdayMusic({ entered, onUnlock }: { entered: boolean; onUnlock: () => void }) {
   const [track, setTrack] = useState(tracks[0]);
+  const [coverUrl, setCoverUrl] = useState<string | null>(null);
   const [query, setQuery] = useState('');
+  const [results, setResults] = useState<SpotifyResult[]>([]);
+  const [searching, setSearching] = useState(false);
   const [selected, setSelected] = useState('C');
   const [strumming, setStrumming] = useState(false);
   const [playing, setPlaying] = useState(false);
