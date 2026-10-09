@@ -112,7 +112,7 @@ export function BirthdayMusic({ entered, onUnlock }: { entered: boolean; onUnloc
   }
   function selectTrack(index: number) {
     const next = tracks[index]; if (!next) return;
-    controller.current?.pause(); setTrack(next); setPosition(0); setPlaying(false); setStep(0); setQuery(''); setSelected(next.chords[0]);
+    controller.current?.pause(); setTrack(next); setCoverUrl(null); setPosition(0); setPlaying(false); setStep(0); setQuery(''); setSelected(next.chords[0]);
     setMessage('happy birthday to my favorite person, keneisya! 🤍');
     if (next.id) { controller.current?.loadUri(`spotify:track:${next.id}`); controller.current?.play(); }
   }
