@@ -8,14 +8,17 @@ import { birthdayLetter } from '@/lib/birthday';
 import flowers from '@/assets/birthday-flowers.jpg';
 import cake from '@/assets/birthday-cake.jpg';
 import sunset from '@/assets/sunset-memory.jpg';
+import cutestGirl from '@/assets/cutest-girl.mp4.asset.json';
+import cutestGirlPoster from '@/assets/cutest-girl-poster.jpg.asset.json';
+import prettyGirl from '@/assets/pretty-girl.jpg.asset.json';
 
-type Memory = { src: string; title: string; kind: 'photo' | 'video'; example?: boolean };
+type Memory = { src: string; title: string; kind: 'photo' | 'video'; example?: boolean; poster?: string; visitOnly?: boolean };
 const initialMemories: Memory[] = [
   { src: cake, title: 'a wish, just for you', kind: 'photo', example: true },
   { src: sunset, title: 'under the same sky', kind: 'photo', example: true },
-  { src: '', title: 'your little movie', kind: 'video' },
+  { src: cutestGirl.url, title: 'cutest girl', kind: 'video', poster: cutestGirlPoster.url },
   { src: flowers, title: 'flowers for my favorite', kind: 'photo', example: true },
-  { src: '', title: 'a favorite memory', kind: 'photo' },
+  { src: prettyGirl.url, title: 'pretty girl', kind: 'photo' },
 ];
 const winLabels = ['survived a super busy day', 'found a reason to smile', 'took a well-deserved rest', 'was a little kinder to myself'];
 const winNotes = ['even on the hard days, you keep going. i’m so proud of you, neis. ♡', 'your smile is my favorite little thing in the whole world. ♡', 'rest isn’t something you have to earn. you deserve softness, always. ♡', 'you deserve the same kindness you give everyone else. always. ♡'];
@@ -85,7 +88,7 @@ export function BirthdayOasis() {
     if(!files?.length) return;
     const media = Array.from(files).filter(f => f.type.startsWith('image/') || f.type.startsWith('video/')).map(f => {
       const src = URL.createObjectURL(f); mediaUrls.current.push(src);
-      return {src,title:f.name.replace(/\.[^.]+$/,''),kind:f.type.startsWith('video/') ? 'video' as const : 'photo' as const};
+      return {src,title:f.name.replace(/\.[^.]+$/,''),kind:f.type.startsWith('video/') ? 'video' as const : 'photo' as const,visitOnly:true};
     });
     const first = media[0];
     if(!first) return;
