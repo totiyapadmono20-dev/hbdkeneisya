@@ -8,7 +8,7 @@ import { birthdayLetter } from '@/lib/birthday';
 import flowers from '@/assets/birthday-flowers.jpg';
 import cake from '@/assets/birthday-cake.jpg';
 import sunset from '@/assets/sunset-memory.jpg';
-import cutestGirl from '@/assets/cutest-girl.mp4.asset.json';
+import cutestGirl from '@/assets/cutest-girl.webm.asset.json';
 import cutestGirlPoster from '@/assets/cutest-girl-poster.jpg.asset.json';
 import prettyGirl from '@/assets/pretty-girl.jpg.asset.json';
 
