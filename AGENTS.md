@@ -14,3 +14,4 @@
 - Spotify playback uses the official controllable embed; show practice arrangements explicitly rather than claiming unverified song chords or licensed lyrics.
 - Keep uploaded gallery media in memory with object URLs and disclose visit-only lifetime until private persistent storage is implemented.
 - Use the existing TanStack hosting runtime; do not add a static SPA Netlify fallback because it cannot replace the app's server entry.
+- Pre-optimize browser UI dependencies alongside React in Vite so first-visit dependency discovery cannot mix React revisions in an open preview.
