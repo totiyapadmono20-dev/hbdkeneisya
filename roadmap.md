@@ -1,4 +1,5 @@
 # Birthday oasis
+- [ ] Ensure Netlify hosting supports the birthday features and bundled CDN photo/video references.
 - [x] Build the blush birthday experience and splash.
 - [x] Link Spotify embed pause/resume, playable practice guitar, and birthday letter.
 - [x] Add filmstrip, visit-only media uploads, trophies, pet, editable clocks, and Discord hug link.

@@ -7,6 +7,13 @@
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
 export default defineConfig({
+  vite: {
+    optimizeDeps: {
+      // Optimize React's renderer with its hooks before the first page request.
+      // Lazy discovery can otherwise leave an open tab using mixed dependency revisions.
+      include: ['@tanstack/react-query', '@radix-ui/react-dialog', '@radix-ui/react-slot', 'lucide-react', 'canvas-confetti', '@supabase/supabase-js', '@tanstack/router-core', '@tanstack/router-core/isServer', '@tanstack/router-core/ssr/client', 'seroval'],
+    },
+  },
   tanstackStart: {
     // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
     // nitro/vite builds from this
