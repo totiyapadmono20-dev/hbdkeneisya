@@ -283,7 +283,8 @@ button { touch-action: manipulation; }
 .appreciation { background: var(--secondary); border-left: 2px solid var(--primary); padding: 12px 15px; margin-top: 16px; font-family: var(--font-serif); font-size: 19px; font-style: italic; animation: rise .5s ease; }
 .clock-grid { display: grid; grid-template-columns: 1fr 80px 1fr; align-items: center; margin-top: 29px; }
 .clock { text-align: center; }.clock-label { color: var(--rose-gold); font-size: 10px; }.clock-time { font-family: var(--font-serif); font-size: 43px; font-weight: 500; margin-top: 5px; font-variant-numeric: tabular-nums; }.clock-zone { font-size: 9px; color: var(--muted-foreground); margin-top: 5px; }
-.clock select { max-width: 135px; font-size: 9px; color: var(--muted-foreground); background: transparent; border: 0; margin-top: 5px; text-align: center; cursor: pointer; }
+.clock select { max-width: 150px; font-size: 10px; letter-spacing: 1.6px; text-transform: lowercase; color: var(--rose-gold); background: transparent; border: 0; border-bottom: 1px dashed color-mix(in oklab,var(--primary) 45%,transparent); padding: 3px 4px 2px; margin-top: 7px; text-align: center; text-align-last: center; cursor: pointer; }
+#connection .eyebrow { text-transform: lowercase; }
 .distance-line { height: 1px; position: relative; background-image: repeating-linear-gradient(90deg,var(--primary) 0 7px,transparent 7px 16px); animation: dash-flow 1.1s linear infinite; }.distance-line svg { position: absolute; color: var(--primary); background: var(--background); left: calc(50% - 11px); top: -11px; width: 22px; padding: 3px; animation: heartbeat 2.5s infinite; }
 @keyframes dash-flow { to { background-position: 16px 0; } }
 .hug-area { text-align: center; margin-top: 28px; }.hug-area p { font-family: var(--font-serif); font-size: 16px; font-style: italic; color: var(--rose-gold); margin-top: 13px; }
