@@ -15,3 +15,5 @@
 - Keep uploaded gallery media in memory with object URLs and disclose visit-only lifetime until private persistent storage is implemented.
 - Use the existing TanStack hosting runtime; do not add a static SPA Netlify fallback because it cannot replace the app's server entry.
 - Pre-optimize browser UI dependencies alongside React in Vite so first-visit dependency discovery cannot mix React revisions in an open preview.
+- Netlify builds must use Nitro's Netlify server preset, preserving TanStack SSR and server functions instead of a static SPA fallback.
+- Resolve Lovable CDN pointers through the published app origin for self-hosted media; leave bundled assets and visit-only object URLs unchanged.

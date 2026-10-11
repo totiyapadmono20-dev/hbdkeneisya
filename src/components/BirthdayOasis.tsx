@@ -11,14 +11,15 @@ import sunset from '@/assets/sunset-memory.jpg';
 import cutestGirl from '@/assets/cutest-girl.webm.asset.json';
 import cutestGirlPoster from '@/assets/cutest-girl-poster.jpg.asset.json';
 import prettyGirl from '@/assets/pretty-girl.jpg.asset.json';
+import { mediaUrl } from '@/lib/media';
 
 type Memory = { src: string; title: string; kind: 'photo' | 'video'; example?: boolean; poster?: string; visitOnly?: boolean };
 const initialMemories: Memory[] = [
   { src: cake, title: 'a wish, just for you', kind: 'photo', example: true },
   { src: sunset, title: 'under the same sky', kind: 'photo', example: true },
-  { src: cutestGirl.url, title: 'cutest girl', kind: 'video', poster: cutestGirlPoster.url },
+  { src: mediaUrl(cutestGirl.url), title: 'cutest girl', kind: 'video', poster: mediaUrl(cutestGirlPoster.url) },
   { src: flowers, title: 'flowers for my favorite', kind: 'photo', example: true },
-  { src: prettyGirl.url, title: 'pretty girl', kind: 'photo' },
+  { src: mediaUrl(prettyGirl.url), title: 'pretty girl', kind: 'photo' },
 ];
 const winLabels = ['survived a super busy day', 'found a reason to smile', 'took a well-deserved rest', 'was a little kinder to myself'];
 const winNotes = ['even on the hard days, you keep going. i’m so proud of you, neis. ♡', 'your smile is my favorite little thing in the whole world. ♡', 'rest isn’t something you have to earn. you deserve softness, always. ♡', 'you deserve the same kindness you give everyone else. always. ♡'];

@@ -1,5 +1,6 @@
 # Birthday oasis
-- [ ] Ensure Netlify hosting supports the birthday features and bundled CDN photo/video references.
+- [x] Configure Netlify's TanStack server preset and cross-host gallery media; verify public photo display and video playback.
+- [ ] Verify the deployed Netlify site: awaiting redeployment with Spotify environment variables and the site's Netlify URL.
 - [x] Build the blush birthday experience and splash.
 - [x] Link Spotify embed pause/resume, playable practice guitar, and birthday letter.
 - [x] Add filmstrip, visit-only media uploads, trophies, pet, editable clocks, and Discord hug link.
