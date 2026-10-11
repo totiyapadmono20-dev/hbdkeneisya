@@ -49,9 +49,19 @@ REQUIRED FEATURES:
 NETLIFY DEPLOYMENT & TECHNICAL REQUIREMENTS:
 - Fully optimized for mobile screens.
 - Clean React and Tailwind CSS implementation with smooth frame transitions.
-- Crucial for Netlify: Ensure that a `_redirects` file containing `/* /index.html 200` is generated or placed inside the build output/public folder directory so that page reloads do not trigger Netlify 404 errors.
+- Netlify uses the TanStack server through Nitro's Netlify preset; Nitro generates the server function and routing rules. Do not add a static `/* /index.html 200` fallback.
 
 This project was built with [Lovable](https://lovable.dev).
+
+## Deploy to Netlify
+
+Connect this repository to Netlify and deploy the latest revision. `netlify.toml` configures the build command, `dist` publish directory, Node 22, Nitro's Netlify server preset, and the Spotify search function. Both TanStack server functions and the existing `/api/spotify-search` fallback run on Netlify.
+
+Set `SPOTIFY_CLIENT_ID` and `SPOTIFY_CLIENT_SECRET` in Netlify's environment variables for the Functions runtime, then redeploy. Never prefix the secret with `VITE_` or put it in browser code. Lovable secrets are not transferred to Netlify automatically. Rotate any Spotify secret previously shared in chat.
+
+The `pretty girl` photo and `cutest girl` video/poster resolve through the public Lovable asset origin and can load on Netlify without a local `/__l5e` endpoint. Keep that public origin available. Birthday images imported from the source are bundled normally.
+
+The letter, guitar, clocks, trophies, pet, gallery controls, and Discord link are browser interactions and remain available on Netlify. New visitor uploads last only for the current visit. Spotify playback/autoplay remains subject to Spotify and browser restrictions; guitar chords are practice arrangements, not verified song transcriptions. Discord opens the recipient's chat with a message copied where clipboard permission allows; it does not automatically send a notification.
 
 **Live app**: https://hbdkeneisya.lovable.app
 
